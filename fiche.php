@@ -1,9 +1,19 @@
 <?php
-// 1 - Récupérer, calculer ou déclarer les données
-include 'database.php';
+session_start();
 
-$numStudent = 37;
-$student = $students[$numStudent];
+// 1 - Récupérer, calculer ou déclarer les données
+
+if (empty($_GET['num']) || !ctype_digit($_GET['num']) || $_GET['num'] < 1) {
+    $_SESSION['message'] = "L'identifiant n'est pas valide.";
+    header('Location: trombinoscope.php');
+    exit;
+}
+
+$numStudent = intval($_GET['num']);
+
+include 'app/model/connexionBDD.php';
+include 'app/model/trombi.model.php';
+$student = getStudent(getDatabaseConnexion(), $numStudent);
 
 $page_title = 'Trombinoscope - ' . $student['firstname']  . ' ' . $student['lastname'];
 
